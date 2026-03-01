@@ -1,0 +1,37 @@
+{
+  "name": "interview_call",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch --env-file --conditions development .env src/index.ts",
+    "build": "tsc",
+    "start": "node --env-file .env.prod dist/index.js",
+    "type-check": "tsc --noEmit",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.2.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.0",
+    "@tsconfig/node22": "^22.0.5",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "ultracite": "^7.2.4"
+  },
+  "imports": {
+    "#*": {
+      "development": "./src/*.ts",
+      "default": "./dist/*.js"
+    }
+  }
+}
