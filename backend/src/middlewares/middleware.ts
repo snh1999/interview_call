@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 
 export const middleware: RequestHandler = (req, res) => {
-	res.send("Hello World!");
-	console.log(`Response sent for ${req.url}`);
+  res.send("Hello World!");
+  console.log(`Response sent for ${req.url}`);
 };
