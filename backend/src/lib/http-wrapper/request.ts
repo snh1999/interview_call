@@ -72,15 +72,16 @@ export function asyncHandler<
 	};
 }
 
-export type Controller<TBody = unknown, TQuery = unknown, TParams = unknown> = (
+export type Controller<TBody, TQuery, TParams> = (
 	req: TypedRequest<TBody, TQuery, TParams>,
+	res: Response,
 ) => unknown;
 
 export function createController<TBody, TQuery, TParams>(
 	handler: Controller<TBody, TQuery, TParams>,
 ): RequestHandler<TBody, TQuery, TParams> {
 	return (req, res, next) => {
-		Promise.resolve(handler(req as TypedRequest<TBody, TQuery, TParams>))
+		Promise.resolve(handler(req as TypedRequest<TBody, TQuery, TParams>, res))
 			.then((result) => {
 				if (result && typeof result === "object" && "status" in result) {
 					const r = result as { status: number };

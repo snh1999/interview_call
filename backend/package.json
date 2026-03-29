@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch --env-file --conditions development .env src/index.ts",
+    "dev": "tsx --watch --env-file .env --conditions development src/index.ts",
     "build": "tsc",
     "start": "node --env-file .env.prod dist/index.js",
     "type-check": "tsc --noEmit",
@@ -16,13 +16,20 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "express": "^5.2.1",
-    "mongoose": "^9.2.3"
+    "jsonwebtoken": "^9.0.3",
+    "mailtrap": "^4.5.1",
+    "mongoose": "^9.2.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.0",
     "@tsconfig/node22": "^22.0.5",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.3.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",

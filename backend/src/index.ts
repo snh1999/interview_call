@@ -1,9 +1,10 @@
 import path from "node:path";
+import cookieParser from "cookie-parser";
 import express from "express";
+import { authRouter } from "#auth/auth.route";
 import { connectDB } from "#lib/db";
 import { ENV } from "#lib/env";
 import { errorHandler } from "#middlewares/error-handler";
-import { userRouter } from "#routes/user";
 
 const app = express();
 const port = ENV.PORT;
@@ -11,10 +12,16 @@ const port = ENV.PORT;
 const __dirname = path.resolve();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (_req, res) => {
 	res.send("Hello World!");
 });
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/auth", authRouter);
 
 app.use(errorHandler);
 
