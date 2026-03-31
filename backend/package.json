@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.3",
     "mailtrap": "^4.5.1",
     "mongoose": "^9.2.3",
+    "stream-chat": "^9.24.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

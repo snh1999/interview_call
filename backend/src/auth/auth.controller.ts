@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { ENV } from "#lib/env";
 import { createController } from "#lib/http-wrapper/request";
 import { SendResponse } from "#lib/http-wrapper/response";
+import { upsertStreamUser } from "#lib/stream";
 import { type IUserDocument, User } from "#user/User.model";
 import type { IAuthPayload, TLoginDTO, TRegisterDTO } from "./auth.dto.js";
 
@@ -22,6 +23,11 @@ const register = createController(async (req, res) => {
 			verificationTokenExpireAt: Date.now() + 60 * 60 * 1000,
 		});
 		await user.save();
+
+		await upsertStreamUser({
+			id: user._id.toString(),
+			name: user.name,
+		});
 
 		const token = getJwtToken({ id: user._id.toString() });
 		SendResponse.setCookie(res, "token", token);
