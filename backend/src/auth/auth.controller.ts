@@ -8,37 +8,30 @@ import type { IAuthPayload, TLoginDTO, TRegisterDTO } from "./auth.dto.js";
 
 const register = createController(async (req, res) => {
 	const { email, password, name } = req.body as TRegisterDTO;
-	try {
-		const existingUser = await User.findOne({ email });
-		if (existingUser) {
-			return SendResponse.error("BAD_REQUEST", "User already exists", 400);
-		}
-
-		const verificationToken = generateToken();
-		const user = new User({
-			email,
-			password,
-			name,
-			verificationToken,
-			verificationTokenExpireAt: Date.now() + 60 * 60 * 1000,
-		});
-		await user.save();
-
-		await upsertStreamUser({
-			id: user._id.toString(),
-			name: user.name,
-		});
-
-		const token = getJwtToken({ id: user._id.toString() });
-		SendResponse.setCookie(res, "token", token);
-
-		return SendResponse.created(
-			getUserObject(user),
-			"User created sucessfully",
-		);
-	} catch (error) {
-		return SendResponse.error("FAILED", (error as Error).message ?? "", 400);
+	const existingUser = await User.findOne({ email });
+	if (existingUser) {
+		return SendResponse.error("BAD_REQUEST", "User already exists", 400);
 	}
+
+	const verificationToken = generateToken();
+	const user = new User({
+		email,
+		password,
+		name,
+		verificationToken,
+		verificationTokenExpireAt: Date.now() + 60 * 60 * 1000,
+	});
+	await user.save();
+
+	await upsertStreamUser({
+		id: user._id.toString(),
+		name: user.name,
+	});
+
+	const token = getJwtToken({ id: user._id.toString() });
+	SendResponse.setCookie(res, "token", token);
+
+	return SendResponse.created(getUserObject(user), "User created sucessfully");
 });
 
 const generateToken = () =>
@@ -52,23 +45,21 @@ const getJwtToken = (payload: IAuthPayload) =>
 const login = createController(async (req, res) => {
 	const { email, password } = req.body as TLoginDTO;
 
-	try {
-		const user = await User.findOne({ email });
+	const user = await User.findOne({ email });
 
-		if (!user || (user && !(await user.matchPassword(password)))) {
-			return SendResponse.error("BAD_REQUEST", "Invalid Credentials", 400);
-		}
+	if (!user || (user && !(await user.matchPassword(password)))) {
+		return SendResponse.error("BAD_REQUEST", "Invalid Credentials", 400);
+	}
 
-		const token = getJwtToken({ id: user._id.toString() });
-		SendResponse.setCookie(res, "token", token);
+	const token = getJwtToken({ id: user._id.toString() });
+	SendResponse.setCookie(res, "token", token);
 
-		user.lastLogin = new Date();
-		await user.save();
-		return SendResponse.ok(
-			{ token, ...getUserObject(user) },
-			"Logged in successfully",
-		);
-	} catch {}
+	user.lastLogin = new Date();
+	await user.save();
+	return SendResponse.ok(
+		{ token, ...getUserObject(user) },
+		"Logged in successfully",
+	);
 });
 
 const logout = createController(async (_, res) => {
@@ -77,15 +68,11 @@ const logout = createController(async (_, res) => {
 });
 
 const getUser = createController(async (req) => {
-	try {
-		const user = req.user;
-		if (!user) {
-			return SendResponse.error("NOT_FOUND", "User Not found", 400);
-		}
-		return SendResponse.ok(getUserObject(user));
-	} catch (error) {
-		return SendResponse.error("FAILED", (error as Error).message, 400);
+	const user = req.user;
+	if (!user) {
+		return SendResponse.error("NOT_FOUND", "User Not found", 400);
 	}
+	return SendResponse.ok(getUserObject(user));
 });
 
 const getUserObject = (user: IUserDocument) => {

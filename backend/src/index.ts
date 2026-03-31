@@ -6,6 +6,7 @@ import { authRouter } from "#auth/auth.route";
 import { connectDB } from "#lib/db";
 import { ENV } from "#lib/env";
 import { errorHandler } from "#middlewares/error-handler";
+import { sessionRouter } from "#session/session.route";
 
 const app = express();
 const port = ENV.PORT;
@@ -30,6 +31,7 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api/session", sessionRouter);
 
 app.use(errorHandler);
 
