@@ -8,15 +8,22 @@ import AppRoutes from "./route.tsx";
 import { theme } from "./theme.ts";
 import "./styles.css";
 
+import { Notifications } from "@mantine/notifications";
+import { Provider } from "react-redux";
+import { store } from "./store/store.ts";
+
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<BrowserRouter>
-			<MantineProvider
-				theme={theme}
-				cssVariablesResolver={mantineCssVariableResolver}
-			>
-				<AppRoutes />
-			</MantineProvider>
-		</BrowserRouter>
-	</StrictMode>,
+	<Provider store={store}>
+		<StrictMode>
+			<BrowserRouter>
+				<MantineProvider
+					theme={theme}
+					cssVariablesResolver={mantineCssVariableResolver}
+				>
+					<Notifications />
+					<AppRoutes />
+				</MantineProvider>
+			</BrowserRouter>
+		</StrictMode>
+	</Provider>,
 );

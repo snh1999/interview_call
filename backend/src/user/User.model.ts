@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { type InferSchemaType, model, Schema } from "mongoose";
+import { type InferSchemaType, model, Schema, type Types } from "mongoose";
 
 const userSchema = new Schema(
 	{
@@ -58,7 +58,8 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp: number) {
 };
 
 type TUser = InferSchemaType<typeof userSchema>;
-interface IUserDocument extends TUser {
+export interface IUserDocument extends TUser {
+	_id: Types.ObjectId;
 	matchPassword(enteredPassword: string): Promise<boolean>;
 	changedPasswordAfter(JWTTimestamp: number): boolean;
 }

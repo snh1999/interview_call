@@ -1,5 +1,6 @@
 import path from "node:path";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import express from "express";
 import { authRouter } from "#auth/auth.route";
 import { connectDB } from "#lib/db";
@@ -20,6 +21,13 @@ app.get("/", (_req, res) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+	cors({
+		origin: process.env.CLIENT_URL || "http://localhost:8080",
+		credentials: true,
+	}),
+);
 
 app.use("/api/auth", authRouter);
 

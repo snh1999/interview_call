@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { ENV } from "#lib/env";
 import { createController } from "#lib/http-wrapper/request";
 import { SendResponse } from "#lib/http-wrapper/response";
-import { User } from "#user/User.model";
+import { type IUserDocument, User } from "#user/User.model";
 import type { IAuthPayload, TLoginDTO, TRegisterDTO } from "./auth.dto.js";
 
 const register = createController(async (req, res) => {
@@ -27,7 +27,7 @@ const register = createController(async (req, res) => {
 		SendResponse.setCookie(res, "token", token);
 
 		return SendResponse.created(
-			{ user: { name: user.name, email: user.email } },
+			getUserObject(user),
 			"User created sucessfully",
 		);
 	} catch (error) {
@@ -58,7 +58,10 @@ const login = createController(async (req, res) => {
 
 		user.lastLogin = new Date();
 		await user.save();
-		return SendResponse.ok({ token }, "Logged in successfully");
+		return SendResponse.ok(
+			{ token, ...getUserObject(user) },
+			"Logged in successfully",
+		);
 	} catch {}
 });
 
@@ -73,12 +76,18 @@ const getUser = createController(async (req) => {
 		if (!user) {
 			return SendResponse.error("NOT_FOUND", "User Not found", 400);
 		}
-		const { email, name, _id: id } = user;
-		return SendResponse.ok({ user: { id, name, email } });
+		return SendResponse.ok(getUserObject(user));
 	} catch (error) {
 		return SendResponse.error("FAILED", (error as Error).message, 400);
 	}
 });
+
+const getUserObject = (user: IUserDocument) => {
+	const { email, name, _id: id } = user;
+	return {
+		user: { id, name, email },
+	};
+};
 
 export const AuthController = {
 	register,
