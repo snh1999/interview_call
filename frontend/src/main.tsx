@@ -8,7 +8,7 @@ import AppRoutes from "./route.tsx";
 import { theme } from "./theme.ts";
 import "./styles.css";
 
-import { Notifications } from "@mantine/notifications";
+import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 
@@ -20,7 +20,7 @@ createRoot(document.getElementById("root")!).render(
 					theme={theme}
 					cssVariablesResolver={mantineCssVariableResolver}
 				>
-					<Notifications />
+					<Toaster position="bottom-right" reverseOrder={false} />
 					<AppRoutes />
 				</MantineProvider>
 			</BrowserRouter>

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import {
@@ -40,10 +40,7 @@ export function useRegisterForm() {
 			dispatch(setCredentials(res.data.user));
 			// biome-ignore lint/suspicious/noExplicitAny: hard to type
 		} catch (error: any) {
-			notifications.show({
-				color: "red",
-				message: error.data.error.message || "Failed to register",
-			});
+			toast.error(error.data.error.message || "Failed to register");
 		}
 	};
 
@@ -75,10 +72,7 @@ export function useLoginForm() {
 			dispatch(setCredentials(res.data.user));
 			// biome-ignore lint/suspicious/noExplicitAny: hard to type
 		} catch (error: any) {
-			notifications.show({
-				color: "red",
-				message: error.data.error.message || "Failed to login",
-			});
+			toast.error(error.data.error.message || "Failed to login");
 		}
 	};
 
