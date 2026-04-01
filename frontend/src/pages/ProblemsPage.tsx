@@ -1,34 +1,29 @@
 import {
-	Badge,
 	Box,
 	Card,
 	Container,
-	Flex,
-	Group,
-	Paper,
 	SimpleGrid,
 	Stack,
 	Text,
-	ThemeIcon,
 	Title,
 } from "@mantine/core";
-import { IconChevronRight, IconCode } from "@tabler/icons-react";
-import { Link } from "react-router";
 import Navbar from "../components/Navbar";
-import ProblemCard from "../problems/ProblemCard";
-import { PROBLEMS } from "../problems/problems";
+import ProblemCard from "../problems/components/ProblemCard";
+import { useGetAllProblemsQuery } from "../store/api/problems";
 
 export default function ProblemsPage() {
-	const problems = Object.values(PROBLEMS);
+	const { data } = useGetAllProblemsQuery();
+
+	const problems = data?.problems ?? [];
 
 	const easyProblemsCount = problems.filter(
-		(p) => p.difficulty === "Easy",
+		(p) => p.difficulty === "easy",
 	).length;
 	const mediumProblemsCount = problems.filter(
-		(p) => p.difficulty === "Medium",
+		(p) => p.difficulty === "medium",
 	).length;
 	const hardProblemsCount = problems.filter(
-		(p) => p.difficulty === "Hard",
+		(p) => p.difficulty === "hard",
 	).length;
 
 	const stats = [
@@ -55,7 +50,7 @@ export default function ProblemsPage() {
 
 					<Stack gap="md">
 						{problems.map((problem) => (
-							<ProblemCard key={problem.id} problem={problem} />
+							<ProblemCard key={problem._id} problem={problem} />
 						))}
 					</Stack>
 

@@ -37,10 +37,10 @@ export function useRegisterForm() {
 	const handleSubmit = async (values: typeof form.values) => {
 		try {
 			const res = await register(values).unwrap();
-			dispatch(setCredentials(res.data.user));
+			dispatch(setCredentials(res.user));
 			// biome-ignore lint/suspicious/noExplicitAny: hard to type
 		} catch (error: any) {
-			toast.error(error.data.error.message || "Failed to register");
+			toast.error(error.error.message || "Failed to register");
 		}
 	};
 
@@ -69,10 +69,10 @@ export function useLoginForm() {
 	const handleSubmit = async (values: typeof form.values) => {
 		try {
 			const res = await login(values).unwrap();
-			dispatch(setCredentials(res.data.user));
+			dispatch(setCredentials(res.user));
 			// biome-ignore lint/suspicious/noExplicitAny: hard to type
 		} catch (error: any) {
-			toast.error(error.data.error.message || "Failed to login");
+			toast.error(error.error.message || "Failed to login");
 		}
 	};
 
