@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router";
 import { Protected } from "./Protected";
 import HomePage from "./pages/Homepage";
 import { LoginPage } from "./pages/LoginPage";
+import ProblemsPage from "./pages/ProblemsPage";
 import { RegisterPage } from "./pages/RegisterPage";
 
 export default function AppRoutes() {
@@ -11,6 +12,7 @@ export default function AppRoutes() {
 			<Route path="/register" element={<RegisterPage />} />
 			<Route path="" element={<Protected />}>
 				<Route path="/" element={<HomePage />} />
+				<Route path="/problems" element={<ProblemsPage />} />
 			</Route>
 		</Routes>
 	);
