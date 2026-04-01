@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router";
-import App from "./App";
-import { LoginPage } from "./auth/LoginPage";
-import { RegisterPage } from "./auth/RegisterPage";
 import { Protected } from "./Protected";
+import HomePage from "./pages/Homepage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
 
 export default function AppRoutes() {
 	return (
@@ -10,7 +10,7 @@ export default function AppRoutes() {
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/register" element={<RegisterPage />} />
 			<Route path="" element={<Protected />}>
-				<Route path="/" element={<App />} />
+				<Route path="/" element={<HomePage />} />
 			</Route>
 		</Routes>
 	);
