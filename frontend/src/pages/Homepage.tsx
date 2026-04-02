@@ -22,8 +22,12 @@ import {
 } from "@tabler/icons-react";
 import AuthTab from "../home/AuthTabs";
 import Header from "../home/Header";
+import { useAppSelector } from "../store/store";
+import DashboardPage from "./Dashboard";
 
 export default function HomePage() {
+	const { user } = useAppSelector((state) => state.auth);
+	if (user) return <DashboardPage />;
 	return (
 		<Box
 			style={{
