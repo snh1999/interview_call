@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router";
 import { Protected } from "./Protected";
+import DashboardPage from "./pages/Dashboard";
 import HomePage from "./pages/Homepage";
 import { LoginPage } from "./pages/LoginPage";
 import ProblemPage from "./pages/ProblemPage";
@@ -15,6 +16,7 @@ export default function AppRoutes() {
 			<Route path="/register" element={<RegisterPage />} />
 			<Route path="/" element={<HomePage />} />
 			<Route path="" element={<Protected />}>
+				<Route path="/dashboard" element={<DashboardPage />} />
 				<Route path="/problems" element={<ProblemsPage />} />
 				<Route path="/problems/create" element={<ProblemForm />} />
 				<Route path="/problem/:id" element={<ProblemPage />} />

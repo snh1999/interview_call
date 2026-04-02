@@ -25,7 +25,7 @@ const baseQueryWithTransform: typeof rawBaseQuery = async (
 
 export const apiSlice = createApi({
 	baseQuery: baseQueryWithTransform,
-	tagTypes: ["User", "Problems"],
+	tagTypes: ["User", "Problems", "Sessions"],
 	endpoints: () => ({}),
 });
 

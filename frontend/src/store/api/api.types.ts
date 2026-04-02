@@ -22,8 +22,3 @@ export interface ISession {
 	createdAt: string;
 	updatedAt: string;
 }
-
-export interface ICreateSessionInput {
-	problem: string;
-	difficulty: TDifficulty;
-}

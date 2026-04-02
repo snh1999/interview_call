@@ -1,4 +1,6 @@
-export const PROBLEMS = {
+import type { TProblem } from "./problems.types";
+
+export const PROBLEMS: Record<string, TProblem> = {
 	"two-sum": {
 		id: "two-sum",
 		title: "Two Sum",
@@ -97,48 +99,48 @@ class Solution {
 		constraints: ["1 ≤ s.length ≤ 10⁵", "s[i] is a printable ascii character"],
 		starterCode: {
 			javascript: `function reverseString(s) {
-  // Write your solution here
-
-}
-
-// Test cases
-let test1 = ["h","e","l","l","o"];
-reverseString(test1);
-console.log(test1); // Expected: ["o","l","l","e","h"]
-
-let test2 = ["H","a","n","n","a","h"];
-reverseString(test2);
-console.log(test2); // Expected: ["h","a","n","n","a","H"]`,
-			python: `def reverseString(s):
-    # Write your solution here
-    pass
-
-# Test cases
-test1 = ["h","e","l","l","o"]
-reverseString(test1)
-print(test1)  # Expected: ["o","l","l","e","h"]
-
-test2 = ["H","a","n","n","a","h"]
-reverseString(test2)
-print(test2)  # Expected: ["h","a","n","n","a","H"]`,
-			java: `import java.util.*;
-
-class Solution {
-    public static void reverseString(char[] s) {
         // Write your solution here
 
-    }
+      }
 
-    public static void main(String[] args) {
-        char[] test1 = {'h','e','l','l','o'};
-        reverseString(test1);
-        System.out.println(Arrays.toString(test1)); // Expected: [o, l, l, e, h]
+      // Test cases
+      let test1 = ["h","e","l","l","o"];
+      reverseString(test1);
+      console.log(test1); // Expected: ["o","l","l","e","h"]
 
-        char[] test2 = {'H','a','n','n','a','h'};
-        reverseString(test2);
-        System.out.println(Arrays.toString(test2)); // Expected: [h, a, n, n, a, H]
-    }
-}`,
+      let test2 = ["H","a","n","n","a","h"];
+      reverseString(test2);
+      console.log(test2); // Expected: ["h","a","n","n","a","H"]`,
+			python: `def reverseString(s):
+          # Write your solution here
+          pass
+
+      # Test cases
+      test1 = ["h","e","l","l","o"]
+      reverseString(test1)
+      print(test1)  # Expected: ["o","l","l","e","h"]
+
+      test2 = ["H","a","n","n","a","h"]
+      reverseString(test2)
+      print(test2)  # Expected: ["h","a","n","n","a","H"]`,
+			java: `import java.util.*;
+
+      class Solution {
+          public static void reverseString(char[] s) {
+              // Write your solution here
+
+          }
+
+          public static void main(String[] args) {
+              char[] test1 = {'h','e','l','l','o'};
+              reverseString(test1);
+              System.out.println(Arrays.toString(test1)); // Expected: [o, l, l, e, h]
+
+              char[] test2 = {'H','a','n','n','a','h'};
+              reverseString(test2);
+              System.out.println(Arrays.toString(test2)); // Expected: [h, a, n, n, a, H]
+          }
+      }`,
 		},
 		expectedOutput: {
 			javascript: '["o","l","l","e","h"]\n["h","a","n","n","a","H"]',
@@ -348,7 +350,10 @@ print(maxArea([1,1]))  # Expected: 1`,
 	},
 };
 
-export const LANGUAGE_CONFIG = {
+export const LANGUAGE_CONFIG: Record<
+	string,
+	{ name: string; icon: string; monacoLang: string }
+> = {
 	javascript: {
 		name: "JavaScript",
 		icon: "/javascript.png",

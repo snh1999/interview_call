@@ -2,7 +2,11 @@ import express from "express";
 import { validateBody, validateParams } from "#lib/http-wrapper/request";
 import { verifyToken } from "#middlewares/verify-token";
 import { SessionController } from "./session.controller.js";
-import { createSessionSchema, sessionParamsSchema } from "./session.dto.js";
+import {
+	createSessionSchema,
+	sessionParamsSchema,
+	updateSessionSchema,
+} from "./session.dto.js";
 
 const router = express.Router();
 
@@ -23,6 +27,15 @@ router.get(
 	validateParams(sessionParamsSchema),
 	SessionController.getSessionById,
 );
+
+router.patch(
+	"/:id",
+	verifyToken,
+	validateParams(sessionParamsSchema),
+	validateBody(updateSessionSchema),
+	SessionController.updateSession,
+);
+
 router.post(
 	"/:id/join",
 	verifyToken,

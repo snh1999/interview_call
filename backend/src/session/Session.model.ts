@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 export const SessionDifficultyEnum = ["easy", "medium", "hard"];
 export const SessionStatusEnum = ["scheduled", "active", "completed"];
-
+// TODO: remove difficulty field
 const sessionSchema = new Schema(
 	{
 		problem: {

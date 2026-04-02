@@ -7,13 +7,12 @@ import {
 	Flex,
 	Loader,
 	Paper,
-	Select,
 	Stack,
 	Text,
 	Title,
 } from "@mantine/core";
 import { StreamCall, StreamVideo } from "@stream-io/video-react-sdk";
-import { IconLogout, IconPhoneCall } from "@tabler/icons-react";
+import { IconPhoneCall } from "@tabler/icons-react";
 import { useEffect } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useNavigate, useParams } from "react-router";
@@ -37,13 +36,10 @@ export default function SessionPage() {
 	const { id } = useParams();
 	const { user } = useAppSelector((state) => state.auth);
 
-	const {
-		data: sessionData,
-		isLoading: loadingSession,
-		refetch,
-	} = useGetSessionByIdQuery(id, {
-		skip: !id,
-	});
+	const { data: sessionData, isLoading: loadingSession } =
+		useGetSessionByIdQuery(id, {
+			skip: !id,
+		});
 
 	const [joinSessionMutation] = useJoinSessionMutation();
 	const [endSessionMutation] = useEndSessionMutation();
