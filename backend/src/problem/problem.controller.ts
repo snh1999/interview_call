@@ -9,6 +9,7 @@ import type {
 
 const createProblem = createController(async (req) => {
 	const data = req.body as TCreateProblemDTO;
+	const creator = req.user._id;
 
 	if (data.slug) {
 		const existing = await Problem.findOne({ slug: data.slug });
@@ -21,7 +22,7 @@ const createProblem = createController(async (req) => {
 		}
 	}
 
-	const problem = await Problem.create(data);
+	const problem = await Problem.create({ ...data, creator });
 	return SendResponse.created({ problem }, "Problem created successfully");
 });
 

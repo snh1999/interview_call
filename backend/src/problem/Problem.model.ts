@@ -34,6 +34,11 @@ const problemSchema = new Schema(
 			enum: ["easy", "medium", "hard"],
 			required: true,
 		},
+		creator: {
+			type: Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+		},
 		categories: [{ type: String }],
 		description: { type: problemDescriptionSchema, required: true },
 		examples: { type: [problemExampleSchema], required: true },
@@ -52,6 +57,5 @@ problemSchema.pre("save", function () {
 
 problemSchema.index({ categories: 1 });
 problemSchema.index({ difficulty: 1, categories: 1 });
-problemSchema.index({ slug: 1 });
 
 export const Problem = model("Problem", problemSchema);

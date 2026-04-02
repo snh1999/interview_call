@@ -6,7 +6,8 @@ export const SessionStatusEnum = ["scheduled", "active", "completed"];
 const sessionSchema = new Schema(
 	{
 		problem: {
-			type: String,
+			type: Schema.Types.ObjectId,
+			ref: "Problem",
 			required: true,
 		},
 		difficulty: {

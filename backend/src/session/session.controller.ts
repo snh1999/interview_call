@@ -33,7 +33,9 @@ const createSession = createController(async (req) => {
 });
 
 const getActiveSessions = createController(async () => {
-	const sessions = await Session.find({ status: "active" })
+	const sessions = await Session.find({
+		$or: [{ status: "active" }, { status: "scheduled" }],
+	})
 		.populate("host", "name email")
 		.sort({ createdAt: -1 })
 		.limit(10);
