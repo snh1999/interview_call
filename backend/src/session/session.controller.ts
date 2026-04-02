@@ -67,6 +67,7 @@ const getRecentSessions = createController(async (req) => {
 const getSessionById = createController(async (req) => {
 	const { id } = req.params as TSessionParams;
 	const session = await Session.findById(id)
+		.populate("problem")
 		.populate("host", "name email")
 		.populate("participant", "name email");
 
@@ -136,6 +137,16 @@ const endSession = createController(async (req) => {
 	return SendResponse.ok({ session }, "Session ended successfully");
 });
 
+const getStreamToken = createController((req) => {
+	const token = chatClient.createToken(req.user._id.toString());
+
+	return SendResponse.ok({
+		token,
+		userId: req.user._id,
+		name: req.user.name,
+	});
+});
+
 export const SessionController = {
 	createSession,
 	getActiveSessions,
@@ -144,4 +155,5 @@ export const SessionController = {
 	getSessionById,
 	joinSession,
 	endSession,
+	getStreamToken,
 };

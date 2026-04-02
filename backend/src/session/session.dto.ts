@@ -9,7 +9,7 @@ export const createSessionSchema = z.object({
 export type TCreateSessionDTO = z.infer<typeof createSessionSchema>;
 
 export const sessionParamsSchema = z.object({
-	id: z.uuid("Invalid session ID"),
+	id: z.string("Invalid session ID"),
 });
 
 export type TSessionParams = z.infer<typeof sessionParamsSchema>;

@@ -27,7 +27,7 @@ export const sessionApiSlice = apiSlice.injectEndpoints({
 			query: () => `${SESSION_URL}/recent`,
 		}),
 
-		getSessionById: builder.query<{ session: ISession }, string>({
+		getSessionById: builder.query<{ session: ISession }, string | undefined>({
 			query: (id) => `${SESSION_URL}/${id}`,
 		}),
 
@@ -44,6 +44,13 @@ export const sessionApiSlice = apiSlice.injectEndpoints({
 				method: "POST",
 			}),
 		}),
+
+		getSessionToken: builder.query<
+			{ token: string; userId: string; name: string },
+			void
+		>({
+			query: () => `${SESSION_URL}/chat`,
+		}),
 	}),
 });
 
@@ -55,4 +62,5 @@ export const {
 	useGetSessionByIdQuery,
 	useJoinSessionMutation,
 	useEndSessionMutation,
+	useGetSessionTokenQuery,
 } = sessionApiSlice;

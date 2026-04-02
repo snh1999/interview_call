@@ -5,6 +5,7 @@ import { LoginPage } from "./pages/LoginPage";
 import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import SessionPage from "./pages/SessionsPage";
 import ProblemForm from "./problems/form/ProblemForm";
 
 export default function AppRoutes() {
@@ -17,6 +18,7 @@ export default function AppRoutes() {
 				<Route path="/problems" element={<ProblemsPage />} />
 				<Route path="/problems/create" element={<ProblemForm />} />
 				<Route path="/problem/:id" element={<ProblemPage />} />
+				<Route path="/session/:id" element={<SessionPage />} />
 			</Route>
 		</Routes>
 	);

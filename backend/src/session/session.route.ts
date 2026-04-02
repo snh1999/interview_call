@@ -12,6 +12,8 @@ router.post(
 	validateBody(createSessionSchema),
 	SessionController.createSession,
 );
+router.get("/chat", verifyToken, SessionController.getStreamToken);
+
 router.get("/active", verifyToken, SessionController.getActiveSessions);
 router.get("/scheduled", verifyToken, SessionController.getScheduledSessions);
 router.get("/recent", verifyToken, SessionController.getRecentSessions);
