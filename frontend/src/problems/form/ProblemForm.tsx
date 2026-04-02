@@ -7,6 +7,7 @@ import {
 	Stack,
 	Textarea,
 	TextInput,
+	Title,
 } from "@mantine/core";
 
 import { CategoryInputs } from "./CategoryInputs";
@@ -21,6 +22,9 @@ export default function ProblemForm() {
 	return (
 		<Container size="lg">
 			<Paper withBorder shadow="sm" p="xl">
+				<Title size="xl" ta="center">
+					Create a new Problem
+				</Title>
 				<form onSubmit={form.onSubmit((values) => handleCreate(values))}>
 					<Stack gap="lg">
 						<TextInput

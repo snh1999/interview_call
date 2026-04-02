@@ -1,6 +1,7 @@
 import { type UseFormReturnType, useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 import { z } from "zod";
 import {
 	useCreateProblemMutation,
@@ -40,9 +41,11 @@ export type TProblem = Omit<TProblemForm, "categories" | "constraints"> & {
 	categories: string[];
 	constraints: string[];
 	_id: string;
+	creator: string;
 };
 
 export function useProblemForm(initialValues?: Partial<TProblemForm>) {
+	const navigate = useNavigate();
 	const form = useForm({
 		initialValues: {
 			title: "",
@@ -86,6 +89,7 @@ export function useProblemForm(initialValues?: Partial<TProblemForm>) {
 				languages: values.languages.map(({ id: _, ...rest }) => rest),
 			}).unwrap();
 			toast.success("Problem created successfully");
+			navigate("/problems");
 		} catch (error: any) {
 			toast.error(error.data?.error?.message || "Failed to create problem");
 		}

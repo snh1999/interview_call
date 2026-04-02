@@ -1,18 +1,22 @@
 import {
 	Box,
+	Button,
 	Card,
 	Container,
+	Flex,
 	SimpleGrid,
 	Stack,
 	Text,
 	Title,
 } from "@mantine/core";
+import { useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
 import ProblemCard from "../problems/components/ProblemCard";
 import { useGetAllProblemsQuery } from "../store/api/problems";
 
 export default function ProblemsPage() {
 	const { data } = useGetAllProblemsQuery();
+	const navigate = useNavigate();
 
 	const problems = data?.problems ?? [];
 
@@ -39,14 +43,23 @@ export default function ProblemsPage() {
 
 			<Container size="xl" py="xl">
 				<Stack gap="xl">
-					<Box>
-						<Title order={1} mb="xs">
-							Practice Problems
-						</Title>
-						<Text c="dimmed" size="lg">
-							Sharpen your coding skills with these curated problems
-						</Text>
-					</Box>
+					<Flex justify="space-between">
+						<Box>
+							<Title order={1} mb="xs">
+								Practice Problems
+							</Title>
+							<Text c="dimmed" size="lg">
+								Sharpen your coding skills with these curated problems
+							</Text>
+						</Box>
+						<Button
+							onClick={() => {
+								navigate("/problems/create");
+							}}
+						>
+							Create Problem
+						</Button>
+					</Flex>
 
 					<Stack gap="md">
 						{problems.map((problem) => (

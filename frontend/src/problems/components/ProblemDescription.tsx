@@ -1,18 +1,26 @@
 import {
 	Badge,
 	Box,
+	Button,
 	Code,
+	Flex,
 	Group,
 	Paper,
 	ScrollArea,
-	Select,
 	Stack,
 	Text,
 	Title,
 } from "@mantine/core";
+import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
+
+import ConfirmationModal from "../../components/ConfirmationModal";
 import ProblemSelect from "../../components/ProblemSelect";
-import { useGetAllProblemsQuery } from "../../store/api/problems";
+import {
+	useDeleteProblemMutation,
+	useUpdateProblemMutation,
+} from "../../store/api/problems";
+import { useAppSelector } from "../../store/store";
 import type { TProblem } from "../form/problem.helper";
 
 const getDifficultyColor = (difficulty: string) => {
@@ -33,20 +41,44 @@ interface Props {
 }
 
 export function ProblemDescription({ problem }: Props) {
-	const { data } = useGetAllProblemsQuery();
 	const { id: currentProblemId } = useParams();
+	const { user } = useAppSelector((state) => state.auth);
 	const navigate = useNavigate();
 
-	const problems = data?.problems ?? [];
+	const [updateProblem] = useUpdateProblemMutation();
+	const [deleteProblem] = useDeleteProblemMutation();
+
+	const onDeleteConfirm = async () => {
+		try {
+			await deleteProblem(currentProblemId).unwrap();
+			navigate("/problems");
+		} catch {
+			toast.error("Failed to delete problem:");
+		}
+	};
 
 	return (
 		<ScrollArea h="100%" bg="gray.1">
 			<Paper p="xl" bg="gray.0" withBorder>
 				<Group justify="space-between" align="flex-start" mb="xs">
 					<Title order={2}>{problem.title}</Title>
-					<Badge color={getDifficultyColor(problem.difficulty)} size="lg">
-						{problem.difficulty}
-					</Badge>
+					<Flex gap="xs">
+						<Badge color={getDifficultyColor(problem.difficulty)} size="lg">
+							{problem.difficulty}
+						</Badge>
+						{user.id === problem.creator && (
+							<Button size="xs" variant="outline">
+								Update
+							</Button>
+						)}
+						{user.id === problem.creator && (
+							<ConfirmationModal
+								titleText="Are you sure you want to delete the problem?"
+								onConfirm={onDeleteConfirm}
+								buttonText="Delete"
+							/>
+						)}
+					</Flex>
 				</Group>
 				{problem.categories.map((c) => (
 					<Badge

@@ -39,7 +39,9 @@ export default function Navbar() {
 						<Button
 							component={Link}
 							to="/dashboard"
-							variant={isActive("/dashboard") ? "filled" : "subtle"}
+							variant={
+								isActive("/dashboard") || isActive("/") ? "filled" : "subtle"
+							}
 							leftSection={<IconDashboard size={16} />}
 						>
 							Dashboard
