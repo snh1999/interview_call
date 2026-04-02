@@ -11,6 +11,7 @@ import {
 	Title,
 } from "@mantine/core";
 import { useNavigate, useParams } from "react-router";
+import ProblemSelect from "../../components/ProblemSelect";
 import { useGetAllProblemsQuery } from "../../store/api/problems";
 import type { TProblem } from "../form/problem.helper";
 
@@ -58,13 +59,7 @@ export function ProblemDescription({ problem }: Props) {
 						{c}
 					</Badge>
 				))}
-				<Select
-					mt="md"
-					size="sm"
-					data={problems.map((p) => ({
-						value: p.slug ?? p._id,
-						label: `${p.title} - ${p.difficulty}`,
-					}))}
+				<ProblemSelect
 					value={currentProblemId}
 					onChange={(val) => {
 						if (!val) return;

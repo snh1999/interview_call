@@ -12,8 +12,8 @@ export default function AppRoutes() {
 		<Routes>
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/register" element={<RegisterPage />} />
+			<Route path="/" element={<HomePage />} />
 			<Route path="" element={<Protected />}>
-				<Route path="/" element={<HomePage />} />
 				<Route path="/problems" element={<ProblemsPage />} />
 				<Route path="/problems/create" element={<ProblemForm />} />
 				<Route path="/problem/:id" element={<ProblemPage />} />
