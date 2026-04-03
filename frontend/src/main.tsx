@@ -13,17 +13,17 @@ import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 
 createRoot(document.getElementById("root")!).render(
-	<Provider store={store}>
-		<StrictMode>
-			<BrowserRouter>
-				<MantineProvider
-					theme={theme}
-					cssVariablesResolver={mantineCssVariableResolver}
-				>
-					<Toaster position="bottom-right" reverseOrder={false} />
-					<AppRoutes />
-				</MantineProvider>
-			</BrowserRouter>
-		</StrictMode>
-	</Provider>,
+  <Provider store={store}>
+    <StrictMode>
+      <BrowserRouter>
+        <MantineProvider
+          theme={theme}
+          cssVariablesResolver={mantineCssVariableResolver}
+        >
+          <Toaster position="bottom-right" reverseOrder={false} />
+          <AppRoutes />
+        </MantineProvider>
+      </BrowserRouter>
+    </StrictMode>
+  </Provider>
 );

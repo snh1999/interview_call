@@ -12,41 +12,41 @@ import { ProblemDescription } from "../problems/components/ProblemDescription";
 import { useGetProblemByIdQuery } from "../store/api/problems";
 
 export default function ProblemPage() {
-	const { id } = useParams();
+  const { id } = useParams();
 
-	const { data } = useGetProblemByIdQuery(id, {
-		skip: !id,
-	});
+  const { data } = useGetProblemByIdQuery(id, {
+    skip: !id,
+  });
 
-	const currentProblem = data?.problem;
-	if (!currentProblem) return;
+  const currentProblem = data?.problem;
+  if (!currentProblem) return;
 
-	return (
-		<Flex direction="column" h="100vh" bg="gray.0">
-			<Navbar />
-			<Box flex={1}>
-				<PanelGroup direction="horizontal">
-					<Panel defaultSize={40} minSize={30}>
-						<ProblemDescription problem={currentProblem} />
-					</Panel>
+  return (
+    <Flex direction="column" h="100vh" bg="gray.0">
+      <Navbar />
+      <Box flex={1}>
+        <PanelGroup direction="horizontal">
+          <Panel defaultSize={40} minSize={30}>
+            <ProblemDescription problem={currentProblem} />
+          </Panel>
 
-					<ResizeHandle direction="horizontal" />
+          <ResizeHandle direction="horizontal" />
 
-					<Panel defaultSize={60} minSize={30}>
-						<PanelGroup direction="vertical">
-							<Panel defaultSize={70} minSize={30}>
-								<CodeEditorPanel selectedProblem={currentProblem} />
-							</Panel>
+          <Panel defaultSize={60} minSize={30}>
+            <PanelGroup direction="vertical">
+              <Panel defaultSize={70} minSize={30}>
+                <CodeEditorPanel selectedProblem={currentProblem} />
+              </Panel>
 
-							<ResizeHandle direction="vertical" />
+              <ResizeHandle direction="vertical" />
 
-							<Panel defaultSize={30} minSize={30}>
-								<OutputPanel />
-							</Panel>
-						</PanelGroup>
-					</Panel>
-				</PanelGroup>
-			</Box>
-		</Flex>
-	);
+              <Panel defaultSize={30} minSize={30}>
+                <OutputPanel />
+              </Panel>
+            </PanelGroup>
+          </Panel>
+        </PanelGroup>
+      </Box>
+    </Flex>
+  );
 }
