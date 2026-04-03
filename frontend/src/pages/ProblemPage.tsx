@@ -19,7 +19,6 @@ export default function ProblemPage() {
 	});
 
 	const currentProblem = data?.problem;
-
 	if (!currentProblem) return;
 
 	return (

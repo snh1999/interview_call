@@ -6,12 +6,11 @@ import {
 	Text,
 	TextInput,
 } from "@mantine/core";
-import type { UseFormReturnType } from "@mantine/form";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import type { TProblemForm } from "./problem.helper";
+import type { useProblemForm } from "./problem.helper";
 
 interface CategoryManagerProps {
-	form: UseFormReturnType<TProblemForm>;
+	form: ReturnType<typeof useProblemForm>["form"];
 }
 
 export function CategoryInputs({ form }: CategoryManagerProps) {

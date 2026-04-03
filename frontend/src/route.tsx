@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router";
 import { Protected } from "./Protected";
+import CreateProblemPage from "./pages/CreateProblemPage";
 import DashboardPage from "./pages/Dashboard";
 import HomePage from "./pages/Homepage";
 import { LoginPage } from "./pages/LoginPage";
@@ -7,7 +8,6 @@ import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import SessionPage from "./pages/SessionsPage";
-import ProblemForm from "./problems/form/ProblemForm";
 
 export default function AppRoutes() {
 	return (
@@ -18,7 +18,7 @@ export default function AppRoutes() {
 			<Route path="" element={<Protected />}>
 				<Route path="/dashboard" element={<DashboardPage />} />
 				<Route path="/problems" element={<ProblemsPage />} />
-				<Route path="/problems/create" element={<ProblemForm />} />
+				<Route path="/problems/create" element={<CreateProblemPage />} />
 				<Route path="/problem/:id" element={<ProblemPage />} />
 				<Route path="/session/:id" element={<SessionPage />} />
 			</Route>

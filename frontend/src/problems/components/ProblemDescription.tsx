@@ -5,23 +5,22 @@ import {
 	Code,
 	Flex,
 	Group,
+	Modal,
 	Paper,
 	ScrollArea,
 	Stack,
 	Text,
 	Title,
 } from "@mantine/core";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
-
 import ConfirmationModal from "../../components/ConfirmationModal";
 import ProblemSelect from "../../components/ProblemSelect";
-import {
-	useDeleteProblemMutation,
-	useUpdateProblemMutation,
-} from "../../store/api/problems";
+import { useDeleteProblemMutation } from "../../store/api/problems";
 import { useAppSelector } from "../../store/store";
-import type { TProblem } from "../form/problem.helper";
+import ProblemForm from "../form/ProblemForm";
+import { type TProblem, useProblemForm } from "../form/problem.helper";
 
 const getDifficultyColor = (difficulty: string) => {
 	switch (difficulty) {
@@ -44,8 +43,10 @@ export function ProblemDescription({ problem }: Props) {
 	const { id: currentProblemId } = useParams();
 	const { user } = useAppSelector((state) => state.auth);
 	const navigate = useNavigate();
+	const [showModal, setShowModal] = useState(false);
 
-	const [updateProblem] = useUpdateProblemMutation();
+	const { form, onSubmit, isLoading } = useProblemForm(problem, ()=> setShowModal(false));
+
 	const [deleteProblem] = useDeleteProblemMutation();
 
 	const onDeleteConfirm = async () => {
@@ -67,7 +68,7 @@ export function ProblemDescription({ problem }: Props) {
 							{problem.difficulty}
 						</Badge>
 						{user.id === problem.creator && (
-							<Button size="xs" variant="outline">
+							<Button onClick={()=> setShowModal(true)} size="xs" variant="outline">
 								Update
 							</Button>
 						)}
@@ -176,6 +177,24 @@ export function ProblemDescription({ problem }: Props) {
 					</Stack>
 				</Paper>
 			</Stack>
+
+			<Modal
+				opened={showModal}
+				onClose={() => {
+					setShowModal(false);
+					form.reset();
+				}}
+				title="Update New Session"
+				centered
+				size="xl"
+			>
+				<ProblemForm
+					title=""
+					form={form}
+					onSubmit={onSubmit}
+					isLoading={isLoading}
+				/>
+			</Modal>
 		</ScrollArea>
 	);
 }

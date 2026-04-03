@@ -8,13 +8,12 @@ import {
 	Text,
 	TextInput,
 } from "@mantine/core";
-import type { UseFormReturnType } from "@mantine/form";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import CodeInput from "./CodeInput";
-import type { TProblemForm } from "./problem.helper";
+import type { useProblemForm } from "./problem.helper";
 
 interface Props {
-	form: UseFormReturnType<TProblemForm>;
+	form: ReturnType<typeof useProblemForm>["form"];
 }
 
 export function LanguageInputs({ form }: Props) {

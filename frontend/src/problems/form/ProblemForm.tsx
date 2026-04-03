@@ -14,18 +14,28 @@ import { CategoryInputs } from "./CategoryInputs";
 import { ConstraintInputs } from "./ConstraintInputs";
 import { ExampleInputs } from "./ExampleInputs";
 import { LanguageInputs } from "./LanguageInputs";
-import { useProblemForm } from "./problem.helper";
+import type { useProblemForm } from "./problem.helper";
 
-export default function ProblemForm() {
-	const { form, handleCreate, isLoading } = useProblemForm();
+interface Props {
+	form: ReturnType<typeof useProblemForm>["form"];
+	onSubmit: ReturnType<typeof useProblemForm>["onSubmit"];
+	isLoading: boolean;
+	title: string;
+}
 
+export default function ProblemForm({
+	title,
+	form,
+	onSubmit,
+	isLoading,
+}: Props) {
 	return (
 		<Container size="lg">
 			<Paper withBorder shadow="sm" p="xl">
 				<Title size="xl" ta="center">
-					Create a new Problem
+					{title}
 				</Title>
-				<form onSubmit={form.onSubmit((values) => handleCreate(values))}>
+				<form onSubmit={form.onSubmit((values) => onSubmit(values))}>
 					<Stack gap="lg">
 						<TextInput
 							label="Title"
@@ -67,7 +77,7 @@ export default function ProblemForm() {
 						<LanguageInputs form={form} />
 
 						<Button type="submit" loading={isLoading} size="lg">
-							Create Problem
+							{title ? 'Create Problem' : 'Update Problem'}
 						</Button>
 					</Stack>
 				</form>

@@ -1,4 +1,4 @@
-import { type UseFormReturnType, useForm } from "@mantine/form";
+import {  useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
@@ -44,23 +44,35 @@ export type TProblem = Omit<TProblemForm, "categories" | "constraints"> & {
 	creator: string;
 };
 
-export function useProblemForm(initialValues?: Partial<TProblemForm>) {
+const stringToObjectArray = (data?: string[]) =>
+	data?.map((value) => ({ id: crypto.randomUUID(), value })) ?? [
+		{ id: crypto.randomUUID(), value: "" },
+	];
+
+const objectToObjectArray = <T extends object>(data?: T[]) =>
+	data?.map((value) => ({ ...value, id: crypto.randomUUID() }));
+
+export function useProblemForm(
+  initialValues?: Partial<TProblem>,
+	onSuccess?: ()=> void,
+	isCreate?: boolean,
+) {
 	const navigate = useNavigate();
 	const form = useForm({
 		initialValues: {
-			title: "",
-			difficulty: "easy" as const,
-			categories: [{ id: crypto.randomUUID(), value: "" }],
-			description: {
+			title: initialValues?.title ?? "",
+			difficulty: initialValues?.difficulty ?? ("easy" as const),
+			categories: stringToObjectArray(initialValues?.categories),
+			description: initialValues?.description ?? {
 				text: "",
 				notes: [],
 				// notes: [{ id: crypto.randomUUID(), value: "" }],
 			},
-			examples: [
+			examples: objectToObjectArray(initialValues?.examples) ?? [
 				{ id: crypto.randomUUID(), input: "", output: "", explanation: "" },
 			],
-			constraints: [{ id: crypto.randomUUID(), value: "" }],
-			languages: [
+			constraints: stringToObjectArray(initialValues?.constraints),
+			languages: objectToObjectArray(initialValues?.languages) ?? [
 				{
 					id: crypto.randomUUID(),
 					name: "",
@@ -68,8 +80,7 @@ export function useProblemForm(initialValues?: Partial<TProblemForm>) {
 					expectedOutput: "",
 				},
 			],
-			slug: "",
-			...initialValues,
+			slug: initialValues?.slug ?? "",
 		},
 		validate: zod4Resolver(problemSchema),
 	});
@@ -77,28 +88,29 @@ export function useProblemForm(initialValues?: Partial<TProblemForm>) {
 	const [createProblem, { isLoading: isCreating }] = useCreateProblemMutation();
 	const [updateProblem, { isLoading: isUpdating }] = useUpdateProblemMutation();
 
-	const handleCreate = async (values: TProblemForm) => {
-		try {
-			await createProblem({
-				...values,
-				categories: values.categories.map(({ value }) => value),
-				constraints: values.constraints.map(({ value }) => value),
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				examples: values.examples.map(({ id: _, ...rest }) => rest),
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				languages: values.languages.map(({ id: _, ...rest }) => rest),
-			}).unwrap();
-			toast.success("Problem created successfully");
-			navigate("/problems");
-		} catch (error: any) {
-			toast.error(error.data?.error?.message || "Failed to create problem");
-		}
-	};
+	const onSubmit = async (values: TProblemForm) => {
+		const data = {
+			...values,
+			categories: values.categories.map(({ value }) => value),
+			constraints: values.constraints.map(({ value }) => value),
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			examples: values.examples.map(({ id: _, ...rest }) => rest),
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			languages: values.languages.map(({ id: _, ...rest }) => rest),
+		};
 
-	const handleUpdate = async (id: string, values: TProblemForm) => {
 		try {
-			await updateProblem({ id, ...values }).unwrap();
-			toast.success("Problem updated successfully");
+			if (initialValues && !isCreate) {
+        await updateProblem({ id: initialValues._id, ...data }).unwrap();
+			} else {
+        await createProblem(data).unwrap();
+        navigate("/problems");
+			}
+      toast.success("Problem updated successfully");
+      if (onSuccess){
+        onSuccess()
+      }
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(error.data?.error?.message || "Failed to update problem");
 		}
@@ -106,8 +118,7 @@ export function useProblemForm(initialValues?: Partial<TProblemForm>) {
 
 	return {
 		form,
-		handleCreate,
-		handleUpdate,
 		isLoading: isCreating || isUpdating,
+		onSubmit,
 	};
 }
