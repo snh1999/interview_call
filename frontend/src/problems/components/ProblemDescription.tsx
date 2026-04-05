@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import ProblemSelect from "../../components/ProblemSelect";
 import { useDeleteProblemMutation } from "../../store/api/problems";

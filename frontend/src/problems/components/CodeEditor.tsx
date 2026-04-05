@@ -61,7 +61,7 @@ export function CodeEditorPanel({ selectedProblem }: Props) {
     dispatch(setOutput(null));
 
     const result = await executeCode(language.name, code ?? "");
-    setOutput(result);
+    dispatch(setOutput(result));
     setIsRunning(false);
 
     if (result.success) {

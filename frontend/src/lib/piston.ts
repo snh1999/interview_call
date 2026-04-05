@@ -1,88 +1,99 @@
-// Piston API is a service for code execution
+const RAPID_API_KEY = import.meta.env.VITE_PISTON_API_KEY;
+const RAPID_API_HOST = "paiza-io.p.rapidapi.com";
+const LANGUAGE_MAP: Record<string, string> = {
+  javascript: "javascript",
+  python: "python",
+  java: "java",
+};
 
-const PISTON_API = "https://emkc.org/api/v2/piston";
-
-const LANGUAGE_VERSIONS: Record<string, { language: string; version: string }> =
-  {
-    javascript: { language: "javascript", version: "18.15.0" },
-    python: { language: "python", version: "3.10.0" },
-    java: { language: "java", version: "15.0.2" },
-  };
-
-/**
- * @param {string} language - programming language
- * @param {string} code - source code to executed
- * @returns {Promise<{success:boolean, output?:string, error?: string}>}
- */
 export async function executeCode(
   language: string,
   code: string
 ): Promise<{ success: boolean; output?: string; error?: string }> {
   try {
-    const languageConfig = LANGUAGE_VERSIONS[language];
-
-    if (!languageConfig) {
-      return {
-        success: false,
-        error: `Unsupported language: ${language}`,
-      };
+    const paizaLang = LANGUAGE_MAP[language];
+    if (!paizaLang) {
+      return { success: false, error: `Unsupported language: ${language}` };
     }
 
-    const response = await fetch(`${PISTON_API}/execute`, {
+    // Step 1: Create the runner
+    const createRes = await fetch(`https://${RAPID_API_HOST}/runners/create`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-RapidAPI-Key": RAPID_API_KEY,
+        "X-RapidAPI-Host": RAPID_API_HOST,
       },
-      body: JSON.stringify({
-        language: languageConfig.language,
-        version: languageConfig.version,
-        files: [
-          {
-            name: `main.${getFileExtension(language)}`,
-            content: code,
-          },
-        ],
+      body: new URLSearchParams({
+        language: paizaLang,
+        source_code: code,
+        input: "",
+        longpoll: "true",
+        longpoll_timeout: "10",
       }),
     });
 
-    if (!response.ok) {
-      return {
-        success: false,
-        error: `HTTP error! status: ${response.status}`,
-      };
+    const createData = await createRes.json();
+    const runnerId = createData.id;
+
+    if (!runnerId) {
+      return { success: false, error: "Failed to create runner" };
     }
 
-    const data = await response.json();
+    // Step 2: Poll for results
+    const details = await pollForResult(runnerId);
 
-    const output = data.run.output || "";
-    const stderr = data.run.stderr || "";
+    const stdout = details.stdout || "";
+    const stderr = details.stderr || "";
+    const buildStderr = details.build_stderr || "";
 
+    if (buildStderr) {
+      return { success: false, output: stdout, error: buildStderr };
+    }
     if (stderr) {
-      return {
-        success: false,
-        output: output,
-        error: stderr,
-      };
+      return { success: false, output: stdout, error: stderr };
     }
 
     return {
       success: true,
-      output: output || "No output",
+      output: stdout || "No output",
     };
   } catch (error) {
     return {
       success: false,
-      error: `Failed to execute code: ${(error as Error).message}`,
+      error: `Execution failed: ${(error as Error).message}`,
     };
   }
 }
 
-function getFileExtension(language: string) {
-  const extensions: Record<string, string> = {
-    javascript: "js",
-    python: "py",
-    java: "java",
-  };
+async function pollForResult(
+  runnerId: string,
+  maxAttempts = 10,
+  intervalMs = 1500
+): Promise<any> {
+  for (let i = 0; i < maxAttempts; i++) {
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
 
-  return extensions[language] || "txt";
+    const res = await fetch(
+      `https://${RAPID_API_HOST}/runners/get_details?id=${runnerId}`,
+      {
+        method: "GET",
+        headers: {
+          "X-RapidAPI-Key": RAPID_API_KEY,
+          "X-RapidAPI-Host": RAPID_API_HOST,
+        },
+      }
+    );
+
+    const data = await res.json();
+    console.log(`Poll attempt ${i + 1}:`, data.status);
+
+    if (data.status === "completed") {
+      return data;
+    }
+
+    // If still running, loop and try again
+  }
+
+  throw new Error("Execution timed out after polling");
 }
