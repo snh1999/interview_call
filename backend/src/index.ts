@@ -34,16 +34,18 @@ app.use(
 app.use("/api/auth", authRouter);
 app.use("/api/problem", problemRouter);
 app.use("/api/session", sessionRouter);
-
 app.use(errorHandler);
 
-if (ENV.NODE_ENV === "production") {
+if (ENV.NODE_ENV === "production" && !process.env.VERCEL) {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
   app.get("/{*any}", (_req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
+
+connectDB().catch(console.error);
+
+export default app;
 
 async function startServer() {
   await connectDB();
@@ -56,4 +58,6 @@ async function startServer() {
   }
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
