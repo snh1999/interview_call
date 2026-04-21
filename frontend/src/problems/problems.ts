@@ -3,6 +3,7 @@ import type { TProblem } from "./problems.types";
 export const PROBLEMS: Record<string, TProblem> = {
   "two-sum": {
     id: "two-sum",
+    slug: "two-sum",
     title: "Two Sum",
     difficulty: "Easy",
     category: "Array • Hash Table",
@@ -77,6 +78,7 @@ class Solution {
 
   "reverse-string": {
     id: "reverse-string",
+    slug: "reverse-string",
     title: "Reverse String",
     difficulty: "Easy",
     category: "String • Two Pointers",
@@ -151,6 +153,7 @@ class Solution {
 
   "valid-palindrome": {
     id: "valid-palindrome",
+    slug: "valid-palindrome",
     title: "Valid Palindrome",
     difficulty: "Easy",
     category: "String • Two Pointers",
@@ -223,6 +226,7 @@ print(isPalindrome(" "))  # Expected: True`,
 
   "maximum-subarray": {
     id: "maximum-subarray",
+  slug: "maximum-subarray",
     title: "Maximum Subarray",
     difficulty: "Medium",
     category: "Array • Dynamic Programming",
@@ -289,6 +293,7 @@ print(maxSubArray([5,4,-1,7,8]))  # Expected: 23`,
 
   "container-with-most-water": {
     id: "container-with-most-water",
+    slug: "container-with-most-water",
     title: "Container With Most Water",
     difficulty: "Medium",
     category: "Array • Two Pointers",

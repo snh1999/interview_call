@@ -71,7 +71,7 @@ export default function ActiveSessionCard({ session }: Prop) {
           <Box flex={1}>
             <Group gap="xs" mb={4}>
               <Text fw={700} size="lg" truncate>
-                {session.problem}
+                {session.problem.title}
               </Text>
               <Badge color={getDifficultyColor(session.difficulty)}>
                 {session.difficulty.charAt(0).toUpperCase() +

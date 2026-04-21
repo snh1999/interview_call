@@ -1,7 +1,7 @@
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import { z } from "zod";
 import {
   useCreateSessionMutation,
@@ -18,7 +18,7 @@ export type TCreateSession = z.infer<typeof sessionSchema>;
 export type TUpdateSession = { id: string } & Partial<TCreateSession>;
 
 export function useSessionForm(initialValues?: Partial<TCreateSession>) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const form = useForm({
     initialValues: {
       problem: initialValues?.problem ?? "",
@@ -40,7 +40,7 @@ export function useSessionForm(initialValues?: Partial<TCreateSession>) {
       }).unwrap();
       toast.success("Session created successfully");
       return;
-      navigate(`/session/${result.session._id}`);
+      // navigate(`/session/${result.session._id}`);
     } catch (error: unknown) {
       const err = error as { data?: { error?: { message?: string } } };
       toast.error(err.data?.error?.message || "Failed to create session");

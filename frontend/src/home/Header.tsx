@@ -3,10 +3,6 @@ import {
   Button,
   Container,
   Flex,
-  Group,
-  Stack,
-  Text,
-  Title,
 } from "@mantine/core";
 import { useNavigate } from "react-router";
 import Logo from "../components/Logo";

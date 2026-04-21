@@ -115,7 +115,7 @@ function RecentSessions({ sessions, isLoading }: RecentSessionsProps) {
                       </Paper>
                       <Box flex={1}>
                         <Text fw={700} truncate mb={4}>
-                          {session.problem}
+                          {session.problem.title}
                         </Text>
                         <Badge
                           color={getDifficultyColor(session.difficulty)}
