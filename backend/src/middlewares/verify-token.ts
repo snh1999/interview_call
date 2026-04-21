@@ -20,8 +20,12 @@ export async function verifyToken(
     if (!payload) {
       return SendResponse.error("UNAUTHORIZED", "Invalid token", 403);
     }
+    let user = await User.findById(payload.id).select("-password");
+    if (!user) {
+      return SendResponse.error("UNAUTHORIZED", "Invalid email or password", 403)
+    }
     req.userId = payload.id;
-    req.user = await User.findById(payload.id).select("-password");
+    req.user = user
     next();
   } catch {
     return SendResponse.error("UNAUTHORIZED", "Error validating token", 403);
